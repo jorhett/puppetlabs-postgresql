@@ -71,6 +71,10 @@ describe 'postgresql::globals', type: :class do
           'enabled' => '1',
           'proxy'   => 'http://proxy-server:8080',
         )
+        is_expected.to contain_yumrepo('pgdg-common').with(
+          'enabled' => '1',
+          'proxy'   => 'http://proxy-server:8080',
+        )
       end
     end
 
@@ -78,7 +82,8 @@ describe 'postgresql::globals', type: :class do
       let(:params) do
         {
           manage_package_repo: true,
-          repo_baseurl: 'http://mirror.localrepo.com',
+          repo_baseurl: 'http://mirror.localrepo.com/pgdg-postgresql',
+          repo_commonurl: 'http://mirror.localrepo.com/pgdg-common',
         }
       end
 
@@ -89,7 +94,11 @@ describe 'postgresql::globals', type: :class do
       it do
         is_expected.to contain_yumrepo('yum.postgresql.org').with(
           'enabled' => '1',
-          'baseurl' => 'http://mirror.localrepo.com',
+          'baseurl' => 'http://mirror.localrepo.com/pgdg-postgresql',
+        )
+        is_expected.to contain_yumrepo('pgdg-common').with(
+          'enabled' => '1',
+          'baseurl' => 'http://mirror.localrepo.com/pgdg-common',
         )
       end
     end
